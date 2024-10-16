@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export const useNavStore = defineStore('nav', () => {
+export const useSidebarStore = defineStore('sidebar', () => {
   const Expanded = ref(false)
   const clientWidth = ref(window.innerWidth)
   function open() {

@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, toRefs } from 'vue'
 import { useRouteStore } from '../store/useRoute.ts'
 import { useRouter } from 'vue-router'
-import { useNavStore } from '../store/useNav.ts'
+import { fixedRouting } from '../router'
+import { useSidebarStore } from '../store/useSidebar.ts'
 const router = useRouter()
 const routeStore = useRouteStore()
-const menuItems = ref(routeStore.routes)
-const navStore = useNavStore()
+const sidebarStore = useSidebarStore()
+const { routes } = toRefs(routeStore)
+const menuItems = computed(() => routes.value)
 
 const navigate = (route: any) => {
-  routeStore.toggleActive(route.meta._id)
   router.push(route.path)
 }
 </script>
 
 <template>
   <div
-    class="h-full flex-shrink-0 transition-all w-auto overflow-hidden relative max-md:p-3.5 max-md:absolute max-md:top-0"
-    :class="[navStore.Expanded ? 'max-md:left-0' : 'max-md:-left-[20rem]']"
+    class="h-full flex-shrink-0 transition-all w-auto overflow-hidden relative max-md:p-3.5 max-md:absolute max-md:top-0 z-50"
+    :class="[sidebarStore.Expanded ? 'max-md:left-0' : 'max-md:-left-[20rem]']"
   >
     <div class="w-[18rem] rounded-xl border border-surface-100 h-full bg-slate-50 flex flex-col">
       <a class="px-6 py-4 flex gap-3.5 items-center flex-shrink-0">
@@ -56,28 +57,16 @@ const navigate = (route: any) => {
         </li>
       </ul>
       <ul class="w-full px-6 py-3 flex flex-col gap-2">
-        <li @click="navigate('Help')" class="cursor-pointer">
+        <li @click="navigate(item)" v-for="item in fixedRouting" class="cursor-pointer">
           <div
             class="px-3 box-border py-2 flex items-center gap-2 text-surface-600 border"
             :class="[
-              routeStore.active === 'Help'
+              routeStore.active.meta.title === item.meta.title
                 ? 'bg-white rounded-lg border-inherit shadow-sm text-surface-900'
                 : 'hover:bg-white hover:rounded-lg  border-transparent hover:border-inherit',
             ]"
           >
-            <i class="pi pi-question-circle"></i><span class="flex-1">Help</span>
-          </div>
-        </li>
-        <li @click="navigate('Settings')" class="cursor-pointer">
-          <div
-            class="px-3 box-border py-2 flex items-center gap-2 text-surface-600 border"
-            :class="[
-              routeStore.active === 'Settings'
-                ? 'bg-white rounded-lg border-inherit shadow-sm text-surface-900'
-                : 'hover:bg-white hover:rounded-lg  border-transparent hover:border-inherit',
-            ]"
-          >
-            <i class="pi pi-cog"></i><span class="flex-1">Settings</span>
+            <i :class="item.meta.icon"></i><span class="flex-1">{{ item.meta.title }}</span>
           </div>
         </li>
       </ul>
