@@ -16,12 +16,9 @@ const { active, history } = toRefs(routeStore)
   <div class="px-5 pt-3 pb-4 flex items-center justify-between border-b max-md:px-0">
     <div class="flex w-full items-center gap-2">
       <div class="md:hidden h-full flex items-center">
-        <i @click.stop="sidebarStore.open()" class="pi pi-bars cursor-pointer mr-2"></i>
+        <i @click.stop="sidebarStore.open()" class="pi pi-bars cursor-pointer "></i>
       </div>
-      <div class="flex flex-col justify-between">
-        <h1 class="font-medium text-xl text-surface-900">{{ active.meta.title }}</h1>
-      </div>
-      <Divider v-if="history.length>0" layout="vertical" />
+      <Divider v-if="history.length>0" class="md:!hidden" layout="vertical" />
       <HistoryTabs/>
     </div>
   </div>

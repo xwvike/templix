@@ -12,9 +12,9 @@ const sidebarStore = useSidebarStore()
     <main @click="sidebarStore.close()" class="w-full h-full flex flex-col gap-6">
       <Header></Header>
       <div class="flex-1 overflow-auto scrollbar scrollbar-thin">
-        <router-view v-slot="{ Component }">
+        <router-view v-slot="{ Component, route }">
           <keep-alive>
-            <component :is="Component" />
+            <component :is="Component" :key="route.meta._id" />
           </keep-alive>
         </router-view>
       </div>

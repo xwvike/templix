@@ -43,19 +43,19 @@ export const routes: route[] = [
     ],
   },
   {
-    path: '/data',
-    redirect: '/data/datatable',
+    path: '/template',
+    redirect: '/template/datatable',
     component: () => import('../layout/MainLayout.vue'),
     meta: {
-      title: 'Data',
+      title: 'Template',
       icon: 'pi pi-fw pi-table',
       showInMenu: true,
       collapsible: true,
     },
     children: [
       {
-        path: '/data/datatable',
-        component: () => import('../views/data/Table.vue'),
+        path: '/template/datatable',
+        component: () => import('../views/template/Table.vue'),
         meta: { title: 'Table', showInMenu: true },
       },
     ],
