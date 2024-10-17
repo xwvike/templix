@@ -23,22 +23,20 @@ const routeEvent = (item: any) => {
     <Chip
       @click="routeEvent(item)"
       v-for="item in history"
-      class="cursor-pointer transition-colors duration-200 dark:border-gray-600 "
+      class="cursor-pointer transition-colors duration-200 dark:border-gray-600"
       :class="[
         active.meta._id === item.meta._id
-          ? 'dark:!bg-primary dark:!text-gray-900'
-          : 'hover:bg-gray-200 dark:hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200'
+          ? '!bg-primary dark:!bg-primary'
+          : 'hover:bg-gray-200 dark:hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200',
       ]"
     >
-      {{ item.meta.title }}
+      <span class="text-primary" :class="[active.meta._id === item.meta._id ? 'text-white dark:text-black' : '']">{{
+        item.meta.title
+      }}</span>
       <i
         @click.stop="removeHistory(item)"
-        class="pi pi-times hover:bg-gray-200 dark:hover:bg-gray-500 p-0.5 rounded-sm transition-colors duration-200"
-        :class="[
-          active.meta._id === item.meta._id
-            ? 'hover:!text-black dark:hover:!text-white'
-            : 'dark:text-gray-300 dark:hover:text-white'
-        ]"
+        class="pi pi-times p-0.5 rounded-sm text-primary transition-colors duration-200"
+        :class="[active.meta._id === item.meta._id ? 'text-white dark:text-black' : '']"
       ></i>
     </Chip>
   </div>

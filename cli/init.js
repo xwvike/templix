@@ -38,6 +38,15 @@ function handleInit() {
             },
         })
             .then(() => {
+                const packageJsonPath = path.join(projectPath, 'package.json')
+
+                if (fs.existsSync(packageJsonPath)) {
+                    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'))
+
+                    packageJson.name = projectName
+
+                    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
+                }
                 if (useGit) {
                     require('child_process').execSync('git init', {
                         cwd: projectPath,

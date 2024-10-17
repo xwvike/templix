@@ -27,6 +27,8 @@ declare module 'vue' {
     Tab: typeof import('primevue/tab')['default']
     TabList: typeof import('primevue/tablist')['default']
     Tabs: typeof import('primevue/tabs')['default']
+    Toast: typeof import('primevue/toast')['default']
+    ToastCommon: typeof import('./src/components/common/ToastCommon.vue')['default']
     ToggleButton: typeof import('primevue/togglebutton')['default']
   }
   export interface ComponentCustomProperties {

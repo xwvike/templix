@@ -14,7 +14,6 @@ export const useRouteStore = defineStore('route', () => {
     historyIgnore.value = [...staticRoutes, ...fixedRouting]
   }
   function toggleActive(route: any) {
-    console.log(route.path)
     active.value = route
     _historyProcess(route)
     const id = route.meta._id

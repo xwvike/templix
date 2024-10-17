@@ -9,7 +9,7 @@ const sidebarStore = useSidebarStore()
 <template>
   <div class="w-screen h-screen overflow-hidden box-border p-5 flex gap-5">
     <Sidebar></Sidebar>
-    <main @click="sidebarStore.close()" class="w-full h-full flex flex-col gap-6">
+    <main @click="sidebarStore.close()" class="w-full h-full flex flex-col gap-6 min-w-0">
       <Header></Header>
       <div class="flex-1 overflow-auto scrollbar scrollbar-thin">
         <router-view v-slot="{ Component, route }">
