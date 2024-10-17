@@ -16,7 +16,7 @@ function handleCreate() {
             type: 'select',
             name: 'pageType',
             message: 'What do you want to create?',
-            choices: ['blank', 'table'],
+            choices: ['blank'],
             default: 'blank',
         },
     ]).then((answers) => {

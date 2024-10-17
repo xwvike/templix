@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/semop.iml" filepath="$PROJECT_DIR$/.idea/semop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/templix.iml" filepath="$PROJECT_DIR$/.idea/templix.iml" />
     </modules>
   </component>
 </project>

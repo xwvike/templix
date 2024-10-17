@@ -1,13 +1,13 @@
 {
-  "name": "semop",
-  "version": "1.0.0",
+  "name": "templix",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "bin": {
     "semop": "./cli/index.js"
   },
   "scripts": {
-    "build": "tsc"
+    "test": "node ./cli/index.js init"
   },
   "dependencies": {
     "fs-extra": "^11.2.0",
