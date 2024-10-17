@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const args = process.argv.slice(2)
 const handleInit = require('./init')
 const handleCreate = require('./create')
