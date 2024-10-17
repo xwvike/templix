@@ -5,6 +5,7 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config'
 import primeConfig from './primeConfig'
 import ToastService from 'primevue/toastservice';
+import { initToast } from './utils/toast'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 const app = createApp(App)
@@ -15,6 +16,7 @@ pinia.use(piniaPluginPersistedstate)
 app.use(PrimeVue, primeConfig())
 app.use(ToastService);
 app.use(pinia)
+initToast(app)
 initRouter().then(res=>{
   app.use(router)
   app.mount('#app')

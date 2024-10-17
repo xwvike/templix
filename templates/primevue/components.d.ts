@@ -20,6 +20,7 @@ declare module 'vue' {
     InputText: typeof import('primevue/inputtext')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ScrollableContainer: typeof import('./src/components/common/ScrollableContainer.vue')['default']
     ScrollPanel: typeof import('primevue/scrollpanel')['default']
     Select: typeof import('primevue/select')['default']
     SelectButton: typeof import('primevue/selectbutton')['default']

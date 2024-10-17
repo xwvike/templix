@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { useHttpStore } from '../store/useHttp'
 import { useAuthStore } from '../store/useAuth'
 import type { RequestOptions, HttpResponse, ResponseError } from '../types/http'
-import { useToast } from 'primevue/usetoast'
+import { toast } from './toast'
 
 class HttpService {
   private instance: AxiosInstance
@@ -123,7 +123,7 @@ class HttpService {
 
   private showMessage(type: 'success' | 'error', message: string) {
     const severity = type === 'success' ? 'success' : 'error'
-    useToast().add({ severity, summary: type.toUpperCase(), detail: message, life: 3000 })
+    toast.show({ severity, summary: type.toUpperCase(), detail: message, life: 3000 })
   }
 
   // 取消请求

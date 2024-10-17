@@ -2,6 +2,7 @@
 import { toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useRouteStore } from '../store/useRoute.ts'
+import ScrollableContainer from '../components/common/ScrollableContainer.vue'
 
 const routeStore = useRouteStore()
 const router = useRouter()
@@ -17,9 +18,7 @@ const routeEvent = (item: any) => {
 </script>
 
 <template>
-  <div
-    class="relative scrollbar-thin max-md:scrollbar-none card pb-1 w-5/6 flex gap-2 overflow-y-hidden overflow-x-auto items-center"
-  >
+  <ScrollableContainer class="w-5/6 min-w-0">
     <Chip
       @click="routeEvent(item)"
       v-for="item in history"
@@ -39,7 +38,7 @@ const routeEvent = (item: any) => {
         :class="[active.meta._id === item.meta._id ? 'text-white dark:text-black' : '']"
       ></i>
     </Chip>
-  </div>
+  </ScrollableContainer>
 </template>
 
 <style scoped></style>
