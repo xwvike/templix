@@ -58,6 +58,11 @@ export const routes: route[] = [
         component: () => import('../views/template/Table.vue'),
         meta: { title: 'Table', showInMenu: true },
       },
+      {
+        path: '/template/http',
+        component: () => import('../views/template/Http.vue'),
+        meta: { title: 'Http', showInMenu: true },
+      },
     ],
   },
 ]

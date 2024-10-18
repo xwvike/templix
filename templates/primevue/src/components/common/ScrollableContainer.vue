@@ -78,20 +78,16 @@ const handleScroll = (direction) => {
 </script>
 <template>
   <div class="relative w-full" :class="containerClass">
-    <div
-      v-if="showButtons && showLeftButton"
-      class="absolute h-full left-0 top-1/2 -translate-y-1/2 z-10"
-      @click="handleScroll('left')"
-    >
+    <div v-if="showButtons && showLeftButton" class="absolute h-full left-0 top-0 z-10" @click="handleScroll('left')">
       <slot name="left-button">
-        <div class="default-button to-right">
+        <div class="default-button">
           <i class="pi pi-angle-left"></i>
         </div>
       </slot>
     </div>
     <div
       ref="containerRef"
-      class="overflow-x-auto whitespace-nowrap px-10 scrollbar"
+      class="overflow-x-auto whitespace-nowrap px-2 scrollbar"
       :class="[wrapperClass, { 'scrollbar-none': !showScrollbar }]"
       @scroll="containerScroll"
     >
@@ -101,11 +97,11 @@ const handleScroll = (direction) => {
     </div>
     <div
       v-if="showButtons && showRightButton"
-      class="absolute h-full right-0 top-1/2 -translate-y-1/2 z-10"
+      class="absolute h-full right-0 top-0 z-10"
       @click="handleScroll('right')"
     >
       <slot name="right-button">
-        <div class="default-button to-left">
+        <div class="default-button">
           <i class="pi pi-angle-right"></i>
         </div>
       </slot>
@@ -115,12 +111,6 @@ const handleScroll = (direction) => {
 
 <style scoped>
 .default-button {
-  @apply h-full bg-white transition-all duration-200 w-10 flex items-center cursor-pointer justify-center;
-}
-.to-right {
-  background: linear-gradient(to right, white, rgba(255, 255, 255, 0.6));
-}
-.to-left {
-  background: linear-gradient(to left, white, rgba(255, 255, 255, 0.6));
+  @apply h-full bg-white dark:bg-zinc-900 transition-all duration-200 w-10 flex items-center cursor-pointer justify-center;
 }
 </style>

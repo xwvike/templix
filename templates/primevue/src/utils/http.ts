@@ -9,7 +9,7 @@ class HttpService {
   private abortControllers: Map<string, AbortController>
   private defaultOptions: RequestOptions = {
     loading: true,
-    retry: 2,
+    retry: 1,
     retryDelay: 1000,
     withToken: true,
     errorMessage: true,
@@ -126,7 +126,6 @@ class HttpService {
     toast.show({ severity, summary: type.toUpperCase(), detail: message, life: 3000 })
   }
 
-  // 取消请求
   public cancelRequest(config: AxiosRequestConfig) {
     const key = this.getRequestKey(config)
     const controller = this.abortControllers.get(key)
@@ -136,7 +135,6 @@ class HttpService {
     }
   }
 
-  // 取消所有请求
   public cancelAllRequests() {
     this.abortControllers.forEach((controller) => {
       controller.abort()
@@ -144,7 +142,6 @@ class HttpService {
     this.abortControllers.clear()
   }
 
-  // 请求方法
   public async request<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     const mergedOptions = { ...this.defaultOptions, ...options }
     ;(config as any).options = mergedOptions
@@ -168,7 +165,6 @@ class HttpService {
   }
 }
 
-// 创建实例
 const http = new HttpService({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 10000,

@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const fse = require('fs-extra')
 const inquirer = require('inquirer')
+const { modifyVueFile } = require('./modifyVueFile')
 const { prompt } = inquirer.default
 function handleInit() {
     console.log('Initializing project...')
@@ -18,8 +19,14 @@ function handleInit() {
             message: 'Initialize a git repository?',
             default: false,
         },
+        {
+            type: 'confirm',
+            name: 'useHttpClient',
+            message: 'Include HTTP client?',
+            default: false,
+        },
     ]).then((answers) => {
-        const { projectName, useGit } = answers
+        const { projectName, useGit, useHttpClient } = answers
         const projectPath = path.join(process.cwd(), projectName)
 
         if (!fs.existsSync(projectPath)) {
@@ -29,7 +36,10 @@ function handleInit() {
         fs.mkdirSync(projectPath, { recursive: true })
 
         const templatePath = path.join(__dirname, '..', 'templates', 'primevue')
-        const exclude = ['node_modules', '.git', 'pnpm-lock.yaml']
+        let exclude = ['node_modules', '.git', 'pnpm-lock.yaml']
+        if (!useHttpClient) {
+            exclude = [...exclude, 'http.ts', 'useHttp.ts', 'GlobalLoading.vue', '.env']
+        }
 
         fse.copy(templatePath, projectPath, {
             filter: (src) => {
@@ -42,8 +52,15 @@ function handleInit() {
 
                 if (fs.existsSync(packageJsonPath)) {
                     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'))
-
                     packageJson.name = projectName
+
+                    if (!useHttpClient) {
+                        if (packageJson.dependencies && packageJson.dependencies['axios']) {
+                            delete packageJson.dependencies['axios']
+                        }
+                        const appPath = path.join(projectPath, 'src', 'App.vue')
+                        modifyVueFile(appPath, true, 'GlobalLoading', 'GlobalLoading')
+                    }
 
                     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
                 }

@@ -2,6 +2,7 @@
 import { watch } from 'vue'
 import { useRouteStore } from './store/useRoute.ts'
 import { useRouter, useRoute } from 'vue-router'
+import GlobalLoading from './components/common/GlobalLoading.vue'
 
 const routeStore = useRouteStore()
 const router = useRouter()
@@ -17,5 +18,6 @@ watch(
 
 <template>
   <router-view></router-view>
+  <GlobalLoading/>
   <Toast />
 </template>
