@@ -3,6 +3,7 @@ const path = require('path')
 const fse = require('fs-extra')
 const inquirer = require('inquirer')
 const { modifyVueFile } = require('./modifyVueFile')
+const CodeTransformer = require('./CodeTransformer')
 const { prompt } = inquirer.default
 function handleInit() {
     console.log('Initializing project...')
@@ -38,7 +39,7 @@ function handleInit() {
         const templatePath = path.join(__dirname, '..', 'templates', 'primevue')
         let exclude = ['node_modules', '.git', 'pnpm-lock.yaml']
         if (!useHttpClient) {
-            exclude = [...exclude, 'http.ts', 'useHttp.ts', 'GlobalLoading.vue', '.env']
+            exclude = [...exclude, 'http.ts', 'useHttp.ts', 'GlobalLoading.vue', '.env', 'Http.vue']
         }
 
         fse.copy(templatePath, projectPath, {
@@ -60,6 +61,13 @@ function handleInit() {
                         }
                         const appPath = path.join(projectPath, 'src', 'App.vue')
                         modifyVueFile(appPath, true, 'GlobalLoading', 'GlobalLoading')
+                        const transformer = new CodeTransformer({
+                            sourcePath: path.join(projectPath, 'src', 'router', 'routes.ts'),
+                            targetPath: path.join(projectPath, 'src', 'router', 'routes.ts'),
+                            config: [],
+                        })
+                        transformer.registerTransform('removeHttpRoute', require('./rules/removeHttpRoute'))
+                        transformer.transform()
                     }
 
                     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))

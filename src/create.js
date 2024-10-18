@@ -23,7 +23,7 @@ function handleCreate() {
         const { name, pageType } = answers
         const pagePath = path.join(process.cwd(), 'src', 'views')
         const filePath = path.join(pagePath, `${name}.vue`)
-        const templatePath = path.join(__dirname, '..', 'pageTemplates', pageType+'.vue')
+        const templatePath = path.join(__dirname, '..', 'pageTemplates', pageType + '.vue')
         const template = fs.readFileSync(templatePath, 'utf8')
         fs.writeFileSync(filePath, template)
     })
