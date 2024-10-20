@@ -39,7 +39,7 @@ function handleInit() {
         const templatePath = path.join(__dirname, '..', 'templates', 'primevue')
         let exclude = ['node_modules', '.git', 'pnpm-lock.yaml']
         if (!useHttpClient) {
-            exclude = [...exclude, 'http.ts', 'useHttp.ts', 'GlobalLoading.vue', '.env', 'Http.vue']
+            exclude = [...exclude, 'http.ts', 'useHttp.ts', 'GlobalLoading.vue', '.env', 'Crud.vue']
         }
 
         fse.copy(templatePath, projectPath, {
@@ -62,11 +62,11 @@ function handleInit() {
                         const appPath = path.join(projectPath, 'src', 'App.vue')
                         modifyVueFile(appPath, true, 'GlobalLoading', 'GlobalLoading')
                         const transformer = new CodeTransformer({
-                            sourcePath: path.join(projectPath, 'src', 'router', 'routes.ts'),
-                            targetPath: path.join(projectPath, 'src', 'router', 'routes.ts'),
+                            sourcePath: path.join(projectPath, 'src', 'router', 'menu.ts'),
+                            targetPath: path.join(projectPath, 'src', 'router', 'menu.ts'),
                             config: [],
                         })
-                        transformer.registerTransform('removeHttpRoute', require('./rules/removeHttpRoute'))
+                        transformer.registerTransform('removeCrudRoute', require('./rules/removeCrudRoute'))
                         transformer.transform()
                     }
 

@@ -5,9 +5,9 @@ module.exports = function (t) {
             const pathProp = props.find(
                 (p) =>
                     t.isObjectProperty(p) &&
-                    t.isIdentifier(p.key, { name: 'path' }) &&
+                    t.isIdentifier(p.key, { name: 'name' }) &&
                     t.isStringLiteral(p.value) &&
-                    p.value.value.includes('/template/http')
+                    p.value.value.includes('crud')
             )
 
             if (pathProp) {

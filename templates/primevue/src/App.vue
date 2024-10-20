@@ -11,7 +11,7 @@ const route = useRoute()
 watch(
   () => route.path,
   (newPath) => {
-    routeStore.toggleActive(route)
+    routeStore.toggleActive(route,'route')
   }
 )
 </script>

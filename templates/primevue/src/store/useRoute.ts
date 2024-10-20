@@ -1,74 +1,94 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { preProcess } from '../utils/preProcess.ts'
-import { routes as routesList } from '../router/routes.ts'
-import router, { staticRoutes, fixedRouting } from '../router'
+import { preAdd_id, menu2Route, findMenu } from '../utils/menuTools.ts'
+import { menus as localMenus } from '../router/menu.ts'
+import router, { staticRoutes } from '../router'
+import {asyncRouterHandle} from '../utils/asyncRouter.ts'
 
 export const useRouteStore = defineStore('route', () => {
   const routes = ref<any>([])
   const active = ref<any>({})
   const history = ref<any>([])
+  const menus = ref<any>([])
   const historyIgnore = ref<any>([])
-  function initRoutes() {
-    routes.value = preProcess(routesList)
-    historyIgnore.value = [...staticRoutes, ...fixedRouting]
+  async function initRoutes() {
+    //获取动态路由
+    const dynamicRoutes = [{
+      path: '/',
+      redirect: '/index',
+      component: 'layout/MainLayout.vue',
+      name: 'root',
+      children: [...menu2Route(preAdd_id(localMenus))],
+    }]
+    asyncRouterHandle(dynamicRoutes)
+    menus.value = localMenus
+    routes.value = dynamicRoutes
+    historyIgnore.value = [...staticRoutes]
   }
-  function toggleActive(route: any) {
-    active.value = route
-    _historyProcess(route)
-    const id = route.meta._id
-    const _routes = routes.value
-    for (let i = 0; i < _routes.length; i++) {
-      if (_routes[i].meta._id === id) {
-        _routes[i].meta['active'] = true
+  function toggleActive(data:any,type:string) {
+    let _id;
+    if (type === 'menu') {
+      _id = data._id
+    }else if (type === 'route') {
+      _id = data.meta._id
+    }
+    const menu = findMenu(_id, menus.value)
+    active.value = menu
+    _historyProcess(menu)
+    const _menus = menus.value
+    for (let i = 0; i < _menus.length; i++) {
+      if (_menus[i]._id === _id) {
+        _menus[i]['active'] = true
       } else {
-        if (_routes[i].children) {
+        if (_menus[i].children) {
           let expanded = false
-          for (let j = 0; j < _routes[i].children.length; j++) {
-            if (_routes[i].children[j].meta._id === id) {
-              _routes[i].children[j].meta['active'] = true
+          for (let j = 0; j < _menus[i].children.length; j++) {
+            if (_menus[i].children[j]._id === _id) {
+              _menus[i].children[j]['active'] = true
               expanded = true
             } else {
-              _routes[i].children[j].meta['active'] = false
+              _menus[i].children[j]['active'] = false
             }
           }
-          _routes[i].meta['active'] = expanded
+          _menus[i]['active'] = expanded
         } else {
-          _routes[i].meta['active'] = false
+          _menus[i]['active'] = false
         }
       }
     }
-    routes.value = _routes
+    menus.value = _menus
   }
-  function _historyProcess(route: any) {
+  function _historyProcess(menu: any) {
+    if (!menu)return
+    if (menu?.type==='index') return
     let list = [...history.value]
-    const raw = { ...route }
     let found = false
+    if(historyIgnore.value.findIndex(item=>item.name===menu.name)>=0) return
     for (let i = 0; i < list.length; i++) {
-      if (list[i].meta._id === raw.meta._id) {
+      if (list[i]._id === menu._id) {
         found = true
         break
       }
     }
-    if (!found && historyIgnore.value.findIndex((item) => item.path === raw.path) < 0) list.push(raw)
+    if (!found) list.push(menu)
     history.value = list
   }
-  async function deleteHistory(route: any) {
+  async function deleteHistory(menu: any) {
     let list = [...history.value]
-    let index = list.findIndex((item) => item.meta._id === route.meta._id)
-    if (route.meta._id === active.value.meta._id) {
+    let index = list.findIndex((item) => item._id === menu._id)
+    if (menu._id === active.value._id) {
       if (list.length > 1) {
         if (index === list.length - 1) {
-          await router.push(list[index - 1].path)
+          await router.push({name:list[index - 1].name})
         } else {
-          await router.push(list[index + 1].path)
+          await router.push({name:list[index + 1].name})
         }
       } else {
         await router.push('/')
       }
     }
-    history.value = list.filter((item) => item.meta._id !== route.meta._id)
+    history.value = list.filter((item) => item._id !== menu._id)
   }
 
-  return { routes, active, history, initRoutes, toggleActive, deleteHistory }
+  return { routes, menus, active, history, initRoutes, toggleActive, deleteHistory }
 })
