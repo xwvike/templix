@@ -35,5 +35,5 @@ router.beforeEach(async (to, from) => {
   }
 })
 
-export { initRouter, fixedRouting, staticRoutes }
+export { initRouter, staticRoutes }
 export default router
